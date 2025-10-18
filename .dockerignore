@@ -10,13 +10,8 @@ frontend/node_modules/
 README.md
 DEPLOYMENT_GUIDE.md
 
-# Frontend source files (we only need the built dist)
-frontend/src/
-frontend/public/
+# Frontend development files (keep source for building)
 frontend/.eslintrc.cjs
-frontend/vite.config.js
-frontend/tailwind.config.js
-frontend/postcss.config.js
 
 # Environment files (except production)
 backend/.env.example

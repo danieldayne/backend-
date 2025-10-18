@@ -1,0 +1,46 @@
+# Multi-stage build for better optimization
+FROM node:18.19.0-alpine3.19 AS frontend-builder
+
+# Build frontend
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
+
+# Backend stage
+FROM node:18.19.0-alpine3.19 AS backend
+
+WORKDIR /app
+
+# Copy and install backend dependencies
+COPY backend/package*.json ./
+RUN npm ci --only=production
+
+# Copy backend source
+COPY backend/ ./
+
+# Copy built frontend from previous stage
+COPY --from=frontend-builder /app/frontend/dist ./public
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Change ownership
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+# Start application
+CMD ["npm", "start"]
