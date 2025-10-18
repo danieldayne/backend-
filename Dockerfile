@@ -24,7 +24,12 @@ COPY backend/ ./
 
 # Copy built frontend files to backend public directory
 RUN mkdir -p public
-RUN cp -r ../frontend/dist/* public/ 2>/dev/null || echo "Frontend files copied"
+RUN if [ -d "../frontend/dist" ] && [ "$(ls -A ../frontend/dist)" ]; then \
+      cp -r ../frontend/dist/* public/; \
+      echo "Frontend files copied successfully"; \
+    else \
+      echo "No frontend files to copy"; \
+    fi
 
 # Set working directory back to backend
 WORKDIR /app/backend
@@ -48,5 +53,9 @@ ENV PORT=3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Start the application
-CMD ["npm", "start"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
