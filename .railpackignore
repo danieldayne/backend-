@@ -1,0 +1,28 @@
+# Development files
+*.md
+.git/
+.gitignore
+deploy.bat
+
+# Frontend source (only include built files)
+frontend/src/
+frontend/public/
+frontend/node_modules/
+frontend/.eslintrc.cjs
+frontend/vite.config.js
+frontend/tailwind.config.js
+frontend/postcss.config.js
+
+# Backend development files
+backend/.env.example
+backend/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
