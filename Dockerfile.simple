@@ -1,0 +1,27 @@
+# Simple Node.js Dockerfile
+FROM node:18-slim
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package files
+COPY package*.json ./
+COPY backend/package*.json ./backend/
+
+# Install dependencies
+RUN cd backend && npm ci --only=production
+
+# Copy application code
+COPY backend/ ./backend/
+COPY frontend/dist/ ./backend/public/
+
+# Expose port
+EXPOSE 3000
+
+# Set environment
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Start application
+WORKDIR /usr/src/app/backend
+CMD ["npm", "start"]
