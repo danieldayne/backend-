@@ -58,7 +58,20 @@ app.use((req, res, next) => {
 
 // Health check route
 app.get('/health', (req, res) => {
-  res.json({ 
+  console.log('Health check endpoint hit');
+  res.status(200).json({ 
+    status: 'OK', 
+    message: 'Dentist Appointment System API is running',
+    timestamp: new Date().toISOString(),
+    port: PORT,
+    env: process.env.NODE_ENV
+  });
+});
+
+// Additional health check routes
+app.get('/', (req, res) => {
+  console.log('Root endpoint hit');
+  res.status(200).json({ 
     status: 'OK', 
     message: 'Dentist Appointment System API is running',
     timestamp: new Date().toISOString()
