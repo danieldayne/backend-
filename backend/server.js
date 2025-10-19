@@ -128,7 +128,7 @@ app.use('*', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`🦷 Dentist Appointment System API running on port ${PORT}`);
   console.log(`📱 Frontend URL: ${process.env.FRONTEND_URL}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);

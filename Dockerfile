@@ -42,12 +42,12 @@ RUN addgroup -g 1001 -S nodejs && \
 RUN chown -R nextjs:nodejs /app
 USER nextjs
 
-# Expose port
-EXPOSE 3000
-
 # Set environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
+
+# Expose port
+EXPOSE 3000
 
 # Health check (temporarily disabled for deployment)
 # HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
